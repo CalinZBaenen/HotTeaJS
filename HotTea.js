@@ -27,10 +27,10 @@ let Class = function Class(description=null) {
 			varinput = CONSTRUCTOR(...args);
 		}
 		const instance = classInstance();
-		for(const s of Object.keys(Literal)) {
+		for(const s of Object.keys(statics)) {
 			if(
-				typeof Literal[s] !== "function"
-			) instance[s] = Literal[s];
+				typeof statics[s] !== "function"
+			) instance[s] = statics[s];
 		}
 		if(typeof varinput === "object") {
 			for(const v of Object.keys(varinput)) {
@@ -40,6 +40,10 @@ let Class = function Class(description=null) {
 		instance.$role = "instance";
 		return Object.seal(instance);
 	};
+	let classVars = description.class || {};
+	for(const cv of Object.keys(classVars)) {
+		Literal[cv] = classVars[cv];
+	}
 	Literal.$name = (
 		typeof description.name === "string" &&
 		description.name.length >= 1 ?
